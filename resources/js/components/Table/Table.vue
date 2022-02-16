@@ -9,19 +9,27 @@
                 <buttondelete class="m-2 " @click="deleteUsers"></buttondelete>
             </div>
         </div>
+        <perpage :fetch-data="fetchData" @perPageUpdated="perPageUpdated"
+                 :perPage="perPage" :page="page" @pageUpdated="pageUpdated"></perpage>
         <div><p class="msg">{{ this.msg }}</p></div>
-        <table class="table " id="sortable">
-            <tableheader :users='users' :selectAll="selectAll" :columns="columns" sortOrder="sortOrder" sortField="sortField"
-
+        <table class="table " id="sortable  table-hover">
+            <tableheader :users='users' :selectAll="selectAll" :columns="columns" :sortOrder="sortOrder"
+                         :sortField="sortField" @sortOrderUpdated="sortOrderUpdated" :page="page" @pageUpdated="pageUpdated"
+                         @sortFieldUpdated="sortFieldUpdated" :fetch-data="fetchData"
                          @selectUserUp="selectUserUp" @selectAllUpdated="selectAllUpdated"
                          @listUpdated="listUpdated"></tableheader>
-            <tablelist :users='users' :user="user"
+            <tablelist :users='users' :user="user" :columns="columns"
                        @userUpdated="userUpdated" @selectUserUp="selectUserUp"
                        :modalView="modalView"></tablelist>
         </table>
+        <pagination v-if="users.length > 0" :pagination="pagination" @pageChanged="pageChanged"
+                    :totalItems="users.length">
+
+        </pagination>
         <modal modalTitle="Create" @listUpdated="listUpdated" v-if="modalCreate.show" @close="modalCreate.show = false"
-               :users="users" :user="user" @userUpdated="userUpdated"
-        ></modal>
+               :users="users" :user="user" @userUpdated="userUpdated">
+
+        </modal>
         <modal modalTitle="View" @listUpdated="listUpdated" @userUpdated="userUpdated" v-if="modalView.show"
                @close="modalView.show = false"
                :users="users" :user="user"
@@ -38,10 +46,12 @@ import Tableheader from "./Tableheader";
 import Tablelist from "./Tablelist";
 import Modal from "./Modal";
 import {computed} from "vue";
+import Perpage from "./Perpage";
+import Pagination from "./Pagination";
 
 
 export default {
-    components: {Modal, Buttonadd, Buttondelete, Tableheader, Tablelist},
+    components: {Pagination, Perpage, Modal, Buttonadd, Buttondelete, Tableheader, Tablelist},
     props: {
         url: {type: String, required: true},
         columns: {}
@@ -55,13 +65,16 @@ export default {
             modalView: {
                 show: false
             },
-            users: [ ],
+            users: [],
             msg: '',
             selectAll: false,
             index: '',
             user: {},
-            sortField: '',
-            sortOrder: 'asc'
+            sortField: this.columns[0],
+            sortOrder: 'asc',
+            perPage: 2,
+            page: 1,
+            pagination: { to: 1, from: 1}
         }
     },
 
@@ -75,9 +88,14 @@ export default {
                 const params = {
                     sort_field: this.sortField,
                     sort_order: this.sortOrder,
+                    per_page: this.perPage,
+                    page: this.page
                 }
-                const { data } = await axios.get(this.url, { params })
+                const {data} = await axios.get(this.url, {params})
+                console.log(data)
+                console.log(data.data)
                 this.users = data.data
+                this.pagination = data.meta
             } catch (e) {
                 console.log(e)
                 alert('Is error')
@@ -103,8 +121,25 @@ export default {
         selectAllUpdated(selectAll) {
             this.selectAll = selectAll;
         },
-        //todo почитать области видимости
-        //найти топ самых используемых методов в js и знать их, в том числе работа с массивами и обьектами
+        sortFieldUpdated(sortField) {
+            this.sortField = sortField;
+        },
+        sortOrderUpdated(sortOrder) {
+            this.sortOrder = sortOrder;
+        },
+        fetchDataUpdated(fetchData) {
+            this.fetchData = fetchData;
+        },
+        perPageUpdated(perPage) {
+          this.perPage = perPage
+        },
+        pageChanged(pageNumber) {
+            this.page = pageNumber
+            this.fetchData()
+        },
+        pageUpdated(page) {
+            this.page = page
+        },
         deleteUsers() {
             this.users = this.users.filter(user => {
                 if (user.selected === false) {

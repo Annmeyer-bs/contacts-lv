@@ -18,10 +18,15 @@ class UserController extends Controller
 
     public function index(Request $request)
     {
-        $sortField = in_array($request->input('sort_field'),
-            $this->sortFields) ? $request->input('sort_field') : self::DEFAULT_SORT_FIELD;
-        $sortOrder = in_array($request->input('sort_order'),
-            $this->sortOrders) ? $request->input('sort_order') : self::DEFAULT_SORT_ORDER;
+        $sortFieldInput = $request->input('sort_field', self::DEFAULT_SORT_FIELD);
+        $sortField = in_array($sortFieldInput,$this->sortFields) ? $sortFieldInput : self::DEFAULT_SORT_FIELD;;
+
+        $sortOrder = $request->input('sort_order', self::DEFAULT_SORT_ORDER);
+//
+//        $sortField = in_array($request->input('sort_field'),
+//            $this->sortFields) ? $request->input('sort_field') : self::DEFAULT_SORT_FIELD;
+//        $sortOrder = in_array($request->input('sort_order'),
+//            $this->sortOrders) ? $request->input('sort_order') : self::DEFAULT_SORT_ORDER;
         $query = User::orderBY($sortField, $sortOrder);
         $perPage = $request->input('per_page') ?? self::PER_PAGE;
 

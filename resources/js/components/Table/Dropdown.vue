@@ -23,13 +23,13 @@ export default {
     }
   },
   methods:{
-    documentClick(e){
-      let el = this.$refs.dropMenu
-      let target = e.target
-      if (( el !== target) && !el.contains(target)) {
-        this.visible=false
-      }
-    }
+    // documentClick(e){
+    //   let el = this.$refs.dropMenu
+    //   let target = e.target
+    //   if (( el !== target) && !el.contains(target)) {
+    //     this.visible=false
+    //   }
+    // }
   },
   created () {
     document.addEventListener('click', this.documentClick)

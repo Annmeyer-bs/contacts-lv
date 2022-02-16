@@ -17,7 +17,7 @@
     </head>
     <body class="antialiased">
         <div id="app">
-            <app url="{{ route('api.users') }}" :columns="['name','email','adress','created']"></app>
+            <app url="{{ route('api.users') }}" :columns="['name','email','adress','created_at']"></app>
 
         </div>
     <script src="{{mix('js/app.js')}}"></script>
