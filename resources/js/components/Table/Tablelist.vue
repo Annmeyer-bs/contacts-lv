@@ -1,31 +1,32 @@
 <template>
     <tbody class="">
-    <tr v-if="users.length === 0">Users not found</tr>
-    <tr v-else class="" v-for="(user, index) in users" :key="index">
+    <tr v-if="usersUp.length === 0">Users not found</tr>
+    <tr v-else class="" v-for="(user, index) in usersUp" :key="index">
         <th scope="row">
-            <input type="checkbox" :value="index" v-model="user.selected">
+            <input type="checkbox" :value="user.id" v-model="selectedUp" >
         </th>
         <td><p></p></td>
         <td v-for="column in columns">{{ user[column] }}</td>
-         <td>
-             <dropdown>
-            <template v-slot:trigger>
-                <button type="button" class="btn" id="dropdownMenuOffset">
-                    <i class="bi bi-three-dots-vertical"></i>
-                </button>
-            </template>
+        <td>
+            <dropdown>
+                <template v-slot:trigger>
+                    <button type="button" class="btn" id="dropdownMenuOffset">
+                        <i class="bi bi-three-dots-vertical"></i>
+                    </button>
+                </template>
 
-            <li @click="editUser(user,index)"><a
-                class="dropdown-item px-2 text-xs block hover:bg-gray-900"
-                href="#"><i
-                class="bi bi-list"></i> View</a>
-            </li>
-            <li @click="removeUser(index)"><a
-                class="dropdown-item px-2 text-xs block border-top border-dark border-2 hover:bg-gray-900" href="#"><i
-                class="bi bi-x-lg red">
-            </i> Delete</a></li>
-        </dropdown>
-</td>
+                <li @click="editUser(user)"><a
+                    class="dropdown-item px-2 text-xs block hover:bg-gray-900"
+                    href="#"><i
+                    class="bi bi-list"></i> View</a>
+                </li>
+                <li @click="removeUser(user)">
+                    <a class="dropdown-item px-2 text-xs block border-top border-dark border-2 hover:bg-gray-900"
+                       href="#">
+                        <i class="bi bi-x-lg red"></i> Delete</a>
+                </li>
+            </dropdown>
+        </td>
         <td><p></p></td>
         <td><p></p></td>
     </tr>
@@ -36,7 +37,7 @@ import Dropdown from './Dropdown'
 
 
 export default {
-    props: ['users', 'user', 'modalView', 'columns'],
+    props: ['users', 'user', 'modalView', 'columns', 'fetchData', 'selected'],
     components: {Dropdown},
 
     data() {
@@ -46,24 +47,54 @@ export default {
     },
 
     computed: {
-        selectUser: {
+        selectedUp: {
             get() {
-                return this.user.select;
+                return this.selected;
             },
             set(data) {
-                this.$emit('selectUserUp', data)
+                this.$emit('selectedUpdate', data)
             }
-        }
+        },
+        usersUp: {
+            get() {
+                return this.users;
+            },
+            set(data) {
+                this.$emit('usersUpdated', data)
+            }
+        },
+
     },
     methods: {
-        removeUser(index) {
-            this.users.splice(index, 1);
+        async removeUser(user) {
+            if (!window.confirm(`Are you sure? ${user.name}`)) {
+                return;
+            }
+            try {
+                await axios.delete(`api/users/${user.id}`)
+                this.fetchData()
+            } catch (error) {
+
+            }
         },
-        editUser(user, index) {
+        editUser(user) {
             this.modalView.show = !this.modalView.show
-            this.$emit('userUpdated', user, index)
-        }
-    }
+            console.log(user)
+            // this.user = user
+            this.$emit('userUpdated', user)
+        },
+
+        select() {
+            console.log(this.selectedUp)
+            //  if (this.users.length == this.selected.length) {
+            //
+            // this.$emit('selectUpdated', this.selected)
+            //      this.$emit('selectUpdated', this.selected, this.selectAll)
+            //    console.log(this.selected)
+            //    console.log(this.selected)
+            // }
+        },
+    },
 }
 </script>
 

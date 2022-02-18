@@ -3,8 +3,9 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="csrf-token" content="{{ csrf_token() }}">
 
-        <title>Laravel</title>
+        <title>Laravel - Vue : Contacts</title>
 
         <!-- Fonts -->
         <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700&display=swap" rel="stylesheet">
@@ -18,7 +19,6 @@
     <body class="antialiased">
         <div id="app">
             <app url="{{ route('api.users') }}" :columns="['name','email','adress','created_at']"></app>
-
         </div>
     <script src="{{mix('js/app.js')}}"></script>
     </body>

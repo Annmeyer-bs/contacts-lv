@@ -17,7 +17,7 @@ export default {
     },
     data() {
         return {
-            pageOptions: [2, 10, 20, 50],
+            pageOptions: [5, 10, 20, 50],
         }
     },
     computed: {

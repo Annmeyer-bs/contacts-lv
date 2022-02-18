@@ -5,21 +5,23 @@
         <div class="d-flex flex-row justify-content-between ">
             <p class="m-3">Contacts</p>
             <div class="button d-flex">
-                <buttonadd class="m-2 " :modalCreate="modalCreate" @userUpdated="userUpdated"></buttonadd>
-                <buttondelete class="m-2 " @click="deleteUsers"></buttondelete>
+                <buttonadd class="m-2 " :modalCreate="modalCreate" :user="user" @userUpdated="userUpdated"></buttonadd>
+                <buttondelete class="m-2 " @click="removeUsers"></buttondelete>
             </div>
         </div>
+        <div><p v-if="selected.length > 0"> With Checked {{ this.selected.length }}</p></div>
         <perpage :fetch-data="fetchData" @perPageUpdated="perPageUpdated"
                  :perPage="perPage" :page="page" @pageUpdated="pageUpdated"></perpage>
         <div><p class="msg">{{ this.msg }}</p></div>
         <table class="table " id="sortable  table-hover">
-            <tableheader :users='users' :selectAll="selectAll" :columns="columns" :sortOrder="sortOrder"
+            <tableheader :users='users' :selectAll="selectAll" :selectPage="selectPage" :selected="selected" :columns="columns" :sortOrder="sortOrder"
                          :sortField="sortField" @sortOrderUpdated="sortOrderUpdated" :page="page" @pageUpdated="pageUpdated"
                          @sortFieldUpdated="sortFieldUpdated" :fetch-data="fetchData"
-                         @selectUserUp="selectUserUp" @selectAllUpdated="selectAllUpdated"
+                         @selectedUpdate="selectedUpdate" @selectAllUpdated="selectAllUpdated"
                          @listUpdated="listUpdated"></tableheader>
-            <tablelist :users='users' :user="user" :columns="columns"
-                       @userUpdated="userUpdated" @selectUserUp="selectUserUp"
+            <tablelist :users='users' :user="user" :columns="columns" :fetch-data="fetchData" :selected="selected"
+                       @usersUpdated="usersUpdated" @userUpdated="userUpdated"
+                       @selectedUpdate="selectedUpdate"
                        :modalView="modalView"></tablelist>
         </table>
         <pagination v-if="users.length > 0" :pagination="pagination" @pageChanged="pageChanged"
@@ -27,10 +29,10 @@
 
         </pagination>
         <modal modalTitle="Create" @listUpdated="listUpdated" v-if="modalCreate.show" @close="modalCreate.show = false"
-               :users="users" :user="user" @userUpdated="userUpdated">
+               :users="users" :user="user" :fetch-data="fetchData">
 
         </modal>
-        <modal modalTitle="View" @listUpdated="listUpdated" @userUpdated="userUpdated" v-if="modalView.show"
+        <modal modalTitle="View" @listUpdated="listUpdated"  v-if="modalView.show" :fetch-data="fetchData"
                @close="modalView.show = false"
                :users="users" :user="user"
                :index="index"
@@ -68,11 +70,13 @@ export default {
             users: [],
             msg: '',
             selectAll: false,
+            selectPage: false,
+            selected: [],
             index: '',
             user: {},
             sortField: this.columns[0],
             sortOrder: 'asc',
-            perPage: 2,
+            perPage: 5,
             page: 1,
             pagination: { to: 1, from: 1}
         }
@@ -96,10 +100,33 @@ export default {
                 console.log(data.data)
                 this.users = data.data
                 this.pagination = data.meta
+                console.log("qwe77");
             } catch (e) {
                 console.log(e)
                 alert('Is error')
             }
+
+        },
+        async removeUsers() {
+            if (this.selected.length !== 0) {
+                try {
+                    await axios.delete(`api/users/any/` + this.selected)
+                    this.selected = []
+                    this.fetchData()
+                } catch (error) {
+
+                }
+            } else {
+                this.msg = 'Check User for removing';
+            }
+        },
+        selectAllUsers() {
+            axios.get(`api/users/all`)
+            .then(response => {
+                this.selected = response.data;
+                this.selectAll = true;
+                this.selectPage = true;
+            })
 
         },
         show() {
@@ -111,12 +138,15 @@ export default {
         listUpdated(users) {
             this.users = users;
         },
-        userUpdated(user, index) {
-            this.user = user;
-            this.index = index;
+        usersUpdated(users) {
+            this.users = users;
+
         },
-        selectUserUp(selected) {
-            this.user.select = selected;
+        userUpdated(user) {
+            this.user = user;
+        },
+        selectedUpdate(selected) {
+            this.selected = selected;
         },
         selectAllUpdated(selectAll) {
             this.selectAll = selectAll;
@@ -140,13 +170,7 @@ export default {
         pageUpdated(page) {
             this.page = page
         },
-        deleteUsers() {
-            this.users = this.users.filter(user => {
-                if (user.selected === false) {
-                    return user;
-                }
-            });
-        }
+
 
     }
 }

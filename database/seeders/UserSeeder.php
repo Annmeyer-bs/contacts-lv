@@ -15,7 +15,6 @@ class UserSeeder extends Seeder
      */
     public function run()
     {
-//        User::factory(500)->create();
         DB::table('users')->insert([
             'name' => Str::random(10),
             'email' =>  Str::random(10) + @gmail.com,
@@ -23,26 +22,5 @@ class UserSeeder extends Seeder
             'photo' => Str::random(10),
             'password' => bcrypt('111'),
         ]);
-//        DB::table('users')->insert([
-//            'name' => 'Lone Doe',
-//            'email' => 'r.bd@gmail.com',
-//            'adress' => 'Ukraine, Zaporozhye',
-//            'photo' => '',
-//            'password' => bcrypt('111'),
-//        ]);
-//        DB::table('users')->insert([
-//            'name' => 'Leo Doe',
-//            'email' => 'anr.bd@gmail.com',
-//            'adress' => 'Ukraine, Kharkiv',
-//            'photo' => '',
-//            'password' => bcrypt('111'),
-//        ]);
-//        DB::table('users')->insert([
-//            'name' => 'John Doe',
-//            'email' => 'run.bd@gmail.com',
-//            'adress' => 'Ukraine, Zaporozhye',
-//            'photo' => '',
-//            'password' => bcrypt('111'),
-//        ]);
     }
 }
