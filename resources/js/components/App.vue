@@ -1,6 +1,5 @@
 <template>
     <div>
-        {{ url }}
         <headers></headers>
         <tables :url="url" :columns="columns"></tables>
     </div>

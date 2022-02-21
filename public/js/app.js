@@ -19467,10 +19467,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     onSubmit: function onSubmit() {
       if (this.modalTitle === 'View') {
         this.editUser();
-        console.log("view");
       } else {
         this.createUser();
-        console.log("creae");
       }
     },
     createUser: function createUser() {
@@ -19482,46 +19480,45 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
-                console.log();
-                _context.prev = 1;
-                _context.next = 4;
+                _context.prev = 0;
+                _context.next = 3;
                 return axios.post("api/users", {
                   name: _this.userInEdit.name,
                   email: _this.userInEdit.email,
                   adress: _this.userInEdit.adress
                 });
 
-              case 4:
+              case 3:
                 response = _context.sent;
 
                 _this.fetchData();
 
                 _this.$emit('close');
 
-                _context.next = 18;
+                _context.next = 17;
                 break;
 
-              case 9:
-                _context.prev = 9;
-                _context.t0 = _context["catch"](1);
+              case 8:
+                _context.prev = 8;
+                _context.t0 = _context["catch"](0);
                 _context.t1 = _context.t0.response.status;
-                _context.next = _context.t1 === 422 ? 14 : 16;
+                _context.next = _context.t1 === 422 ? 13 : 15;
                 break;
 
-              case 14:
+              case 13:
                 _this.errors = _context.t0.response.data.errors;
-                return _context.abrupt("break", 18);
+                return _context.abrupt("break", 17);
 
-              case 16:
+              case 15:
                 alert('Some error');
-                return _context.abrupt("break", 18);
+                return _context.abrupt("break", 17);
 
-              case 18:
+              case 17:
               case "end":
                 return _context.stop();
             }
           }
-        }, _callee, null, [[1, 9]]);
+        }, _callee, null, [[0, 8]]);
       }))();
     },
     editUser: function editUser() {
@@ -19706,9 +19703,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _Tableheader__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./Tableheader */ "./resources/js/components/Table/Tableheader.vue");
 /* harmony import */ var _Tablelist__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./Tablelist */ "./resources/js/components/Table/Tablelist.vue");
 /* harmony import */ var _Modal__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./Modal */ "./resources/js/components/Table/Modal.vue");
-/* harmony import */ var vue__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! vue */ "./node_modules/vue/dist/vue.esm-bundler.js");
-/* harmony import */ var _Perpage__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./Perpage */ "./resources/js/components/Table/Perpage.vue");
-/* harmony import */ var _Pagination__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! ./Pagination */ "./resources/js/components/Table/Pagination.vue");
+/* harmony import */ var _Perpage__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./Perpage */ "./resources/js/components/Table/Perpage.vue");
+/* harmony import */ var _Pagination__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! ./Pagination */ "./resources/js/components/Table/Pagination.vue");
 
 
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
@@ -19722,11 +19718,10 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
 
 
 
-
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   components: {
-    Pagination: _Pagination__WEBPACK_IMPORTED_MODULE_8__["default"],
-    Perpage: _Perpage__WEBPACK_IMPORTED_MODULE_7__["default"],
+    Pagination: _Pagination__WEBPACK_IMPORTED_MODULE_7__["default"],
+    Perpage: _Perpage__WEBPACK_IMPORTED_MODULE_6__["default"],
     Modal: _Modal__WEBPACK_IMPORTED_MODULE_5__["default"],
     Buttonadd: _Buttonadd__WEBPACK_IMPORTED_MODULE_1__["default"],
     Buttondelete: _Buttondelete__WEBPACK_IMPORTED_MODULE_2__["default"],
@@ -19799,22 +19794,21 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
                 console.log(data.data);
                 _this.users = data.data;
                 _this.pagination = data.meta;
-                console.log("qwe77");
-                _context.next = 17;
+                _context.next = 16;
                 break;
 
-              case 13:
-                _context.prev = 13;
+              case 12:
+                _context.prev = 12;
                 _context.t0 = _context["catch"](0);
                 console.log(_context.t0);
                 alert('Is error');
 
-              case 17:
+              case 16:
               case "end":
                 return _context.stop();
             }
           }
-        }, _callee, null, [[0, 13]]);
+        }, _callee, null, [[0, 12]]);
       }))();
     },
     removeUsers: function removeUsers() {
@@ -19870,15 +19864,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
         _this3.selectPage = true;
       });
     },
-    show: function show() {
-      this.isActive = true;
-    },
-    hide: function hide() {
-      this.isActive = false;
-    },
-    listUpdated: function listUpdated(users) {
-      this.users = users;
-    },
     usersUpdated: function usersUpdated(users) {
       this.users = users;
     },
@@ -19887,9 +19872,6 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     },
     selectedUpdate: function selectedUpdate(selected) {
       this.selected = selected;
-    },
-    selectAllUpdated: function selectAllUpdated(selectAll) {
-      this.selectAll = selectAll;
     },
     sortFieldUpdated: function sortFieldUpdated(sortField) {
       this.sortField = sortField;
@@ -19958,14 +19940,6 @@ __webpack_require__.r(__webpack_exports__);
     }
   },
   computed: {
-    // selectAllUp: {
-    //     get() {
-    //         return this.selectAll;
-    //     },
-    //     set(data) {
-    //         this.$emit('selectAllUpdated', data)
-    //     }
-    // },
     selectedUp: {
       get: function get() {
         return this.selected;
@@ -20010,29 +19984,7 @@ __webpack_require__.r(__webpack_exports__);
 
       this.pageUp = 1;
       this.fetchData();
-    } // select() {
-    //     // if (this.selectAllUp===false) {
-    //     //     this.selectedUp = []
-    //     // }
-    //     if (!this.selectAll) {
-    //         // this.selectedUp = []
-    //         console.log( this.selectAll)
-    //         // for (let i = 0; i < this.users.length; i++) {
-    //         //
-    //         //     console.log(this.selectedUp)
-    //         //     this.selectedUp.push(i);
-    //         //     console.log(i)
-    //         // }
-    //         this.users.forEach(user => {
-    //             this.selectedUp.push(user.id);
-    //
-    //         })
-    //         console.log( this.selectedUp)
-    //     } else {
-    //         this.selectedUp = []
-    //     }
-    // }
-
+    }
   }
 });
 
@@ -20128,18 +20080,8 @@ function _asyncToGenerator(fn) { return function () { var self = this, args = ar
     },
     editUser: function editUser(user) {
       this.modalView.show = !this.modalView.show;
-      console.log(user); // this.user = user
-
+      console.log(user);
       this.$emit('userUpdated', user);
-    },
-    select: function select() {
-      console.log(this.selectedUp); //  if (this.users.length == this.selected.length) {
-      //
-      // this.$emit('selectUpdated', this.selected)
-      //      this.$emit('selectUpdated', this.selected, this.selectAll)
-      //    console.log(this.selected)
-      //    console.log(this.selected)
-      // }
     }
   }
 });
@@ -20164,9 +20106,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
 
   var _component_tables = (0,vue__WEBPACK_IMPORTED_MODULE_0__.resolveComponent)("tables");
 
-  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createTextVNode)((0,vue__WEBPACK_IMPORTED_MODULE_0__.toDisplayString)($props.url) + " ", 1
-  /* TEXT */
-  ), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_headers), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_tables, {
+  return (0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createElementBlock)("div", null, [(0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_headers), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_tables, {
     url: $props.url,
     columns: $props.columns
   }, null, 8
@@ -20821,12 +20761,10 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     onPageUpdated: $options.pageUpdated,
     onSortFieldUpdated: $options.sortFieldUpdated,
     "fetch-data": $options.fetchData,
-    onSelectedUpdate: $options.selectedUpdate,
-    onSelectAllUpdated: $options.selectAllUpdated,
-    onListUpdated: $options.listUpdated
+    onSelectedUpdate: $options.selectedUpdate
   }, null, 8
   /* PROPS */
-  , ["users", "selectAll", "selectPage", "selected", "columns", "sortOrder", "sortField", "onSortOrderUpdated", "page", "onPageUpdated", "onSortFieldUpdated", "fetch-data", "onSelectedUpdate", "onSelectAllUpdated", "onListUpdated"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_tablelist, {
+  , ["users", "selectAll", "selectPage", "selected", "columns", "sortOrder", "sortField", "onSortOrderUpdated", "page", "onPageUpdated", "onSortFieldUpdated", "fetch-data", "onSelectedUpdate"]), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createVNode)(_component_tablelist, {
     users: $data.users,
     user: $data.user,
     columns: $props.columns,
@@ -20848,7 +20786,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
   , ["pagination", "onPageChanged", "totalItems"])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $data.modalCreate.show ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(_component_modal, {
     key: 1,
     modalTitle: "Create",
-    onListUpdated: $options.listUpdated,
+    onUserUpdated: $options.userUpdated,
     onClose: _cache[0] || (_cache[0] = function ($event) {
       return $data.modalCreate.show = false;
     }),
@@ -20857,10 +20795,10 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     "fetch-data": $options.fetchData
   }, null, 8
   /* PROPS */
-  , ["onListUpdated", "users", "user", "fetch-data"])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $data.modalView.show ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(_component_modal, {
+  , ["onUserUpdated", "users", "user", "fetch-data"])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true), $data.modalView.show ? ((0,vue__WEBPACK_IMPORTED_MODULE_0__.openBlock)(), (0,vue__WEBPACK_IMPORTED_MODULE_0__.createBlock)(_component_modal, {
     key: 2,
     modalTitle: "View",
-    onListUpdated: $options.listUpdated,
+    onUserUpdated: $options.userUpdated,
     "fetch-data": $options.fetchData,
     onClose: _cache[1] || (_cache[1] = function ($event) {
       return $data.modalView.show = false;
@@ -20871,7 +20809,7 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     modalView: $data.modalView.show
   }, null, 8
   /* PROPS */
-  , ["onListUpdated", "fetch-data", "users", "user", "index", "modalView"])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]);
+  , ["onUserUpdated", "fetch-data", "users", "user", "index", "modalView"])) : (0,vue__WEBPACK_IMPORTED_MODULE_0__.createCommentVNode)("v-if", true)]);
 }
 
 /***/ }),

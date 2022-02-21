@@ -95,15 +95,11 @@ export default {
         onSubmit() {
             if (this.modalTitle === 'View') {
                 this.editUser()
-                console.log("view");
-
             } else {
                 this.createUser()
-                console.log("creae");
             }
         },
         async createUser() {
-            console.log()
             try {
                 let response = await axios.post(`api/users`, {
                     name: this.userInEdit.name,

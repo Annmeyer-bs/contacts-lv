@@ -80,19 +80,7 @@ export default {
         editUser(user) {
             this.modalView.show = !this.modalView.show
             console.log(user)
-            // this.user = user
             this.$emit('userUpdated', user)
-        },
-
-        select() {
-            console.log(this.selectedUp)
-            //  if (this.users.length == this.selected.length) {
-            //
-            // this.$emit('selectUpdated', this.selected)
-            //      this.$emit('selectUpdated', this.selected, this.selectAll)
-            //    console.log(this.selected)
-            //    console.log(this.selected)
-            // }
         },
     },
 }

@@ -77,7 +77,7 @@ class UserController extends Controller
             'email' => 'required|min:3',
             'adress' => 'required|min:3',
         ]);
-//        $user = new User();
+
         $user = User::find($request->id);
 
         $user->update($request->all());
@@ -88,7 +88,7 @@ class UserController extends Controller
 
     public function destroyAny($users)
     {
-//        dd($users);
+
        $users = explode(',',$users);
         if (User::whereKey($users)->delete()) {
             return response()->json([

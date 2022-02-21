@@ -21,8 +21,6 @@
                 <a class="page-link" href="#"
                    @click.prevent="changePage(pagination.last_page)">Last</a>
             </li>
-
-
         </ul>
         <div>
                    <span>

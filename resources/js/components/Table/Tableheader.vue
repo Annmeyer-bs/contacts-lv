@@ -53,14 +53,6 @@ export default {
         }
     },
     computed: {
-        // selectAllUp: {
-        //     get() {
-        //         return this.selectAll;
-        //     },
-        //     set(data) {
-        //         this.$emit('selectAllUpdated', data)
-        //     }
-        // },
         selectedUp: {
             get() {
                 return this.selected;
@@ -105,28 +97,6 @@ export default {
             this.pageUp = 1
             this.fetchData()
         },
-        // select() {
-        //     // if (this.selectAllUp===false) {
-        //     //     this.selectedUp = []
-        //     // }
-        //     if (!this.selectAll) {
-        //         // this.selectedUp = []
-        //         console.log( this.selectAll)
-        //         // for (let i = 0; i < this.users.length; i++) {
-        //         //
-        //         //     console.log(this.selectedUp)
-        //         //     this.selectedUp.push(i);
-        //         //     console.log(i)
-        //         // }
-        //         this.users.forEach(user => {
-        //             this.selectedUp.push(user.id);
-        //
-        //         })
-        //         console.log( this.selectedUp)
-        //     } else {
-        //         this.selectedUp = []
-        //     }
-        // }
     }
 }
 </script>

@@ -14,11 +14,12 @@
                  :perPage="perPage" :page="page" @pageUpdated="pageUpdated"></perpage>
         <div><p class="msg">{{ this.msg }}</p></div>
         <table class="table " id="sortable  table-hover">
-            <tableheader :users='users' :selectAll="selectAll" :selectPage="selectPage" :selected="selected" :columns="columns" :sortOrder="sortOrder"
-                         :sortField="sortField" @sortOrderUpdated="sortOrderUpdated" :page="page" @pageUpdated="pageUpdated"
+            <tableheader :users='users' :selectAll="selectAll" :selectPage="selectPage" :selected="selected"
+                         :columns="columns" :sortOrder="sortOrder"
+                         :sortField="sortField" @sortOrderUpdated="sortOrderUpdated"
+                         :page="page" @pageUpdated="pageUpdated"
                          @sortFieldUpdated="sortFieldUpdated" :fetch-data="fetchData"
-                         @selectedUpdate="selectedUpdate" @selectAllUpdated="selectAllUpdated"
-                         @listUpdated="listUpdated"></tableheader>
+                         @selectedUpdate="selectedUpdate"></tableheader>
             <tablelist :users='users' :user="user" :columns="columns" :fetch-data="fetchData" :selected="selected"
                        @usersUpdated="usersUpdated" @userUpdated="userUpdated"
                        @selectedUpdate="selectedUpdate"
@@ -26,13 +27,12 @@
         </table>
         <pagination v-if="users.length > 0" :pagination="pagination" @pageChanged="pageChanged"
                     :totalItems="users.length">
-
         </pagination>
-        <modal modalTitle="Create" @listUpdated="listUpdated" v-if="modalCreate.show" @close="modalCreate.show = false"
+        <modal modalTitle="Create" @userUpdated="userUpdated" v-if="modalCreate.show" @close="modalCreate.show = false"
                :users="users" :user="user" :fetch-data="fetchData">
 
         </modal>
-        <modal modalTitle="View" @listUpdated="listUpdated"  v-if="modalView.show" :fetch-data="fetchData"
+        <modal modalTitle="View" @userUpdated="userUpdated"  v-if="modalView.show" :fetch-data="fetchData"
                @close="modalView.show = false"
                :users="users" :user="user"
                :index="index"
@@ -47,7 +47,6 @@ import Buttondelete from "./Buttondelete";
 import Tableheader from "./Tableheader";
 import Tablelist from "./Tablelist";
 import Modal from "./Modal";
-import {computed} from "vue";
 import Perpage from "./Perpage";
 import Pagination from "./Pagination";
 
@@ -100,7 +99,6 @@ export default {
                 console.log(data.data)
                 this.users = data.data
                 this.pagination = data.meta
-                console.log("qwe77");
             } catch (e) {
                 console.log(e)
                 alert('Is error')
@@ -129,15 +127,6 @@ export default {
             })
 
         },
-        show() {
-            this.isActive = true;
-        },
-        hide() {
-            this.isActive = false;
-        },
-        listUpdated(users) {
-            this.users = users;
-        },
         usersUpdated(users) {
             this.users = users;
 
@@ -147,9 +136,6 @@ export default {
         },
         selectedUpdate(selected) {
             this.selected = selected;
-        },
-        selectAllUpdated(selectAll) {
-            this.selectAll = selectAll;
         },
         sortFieldUpdated(sortField) {
             this.sortField = sortField;
