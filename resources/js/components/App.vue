@@ -12,8 +12,8 @@ import Tables from "./Table/Table";
 export default {
     components: {Tables, Headers},
     props: {
-        url: { type: String, required: true },
-        columns: { }
+        url: {type: String, required: true},
+        columns: {}
     },
     data() {
         return {}

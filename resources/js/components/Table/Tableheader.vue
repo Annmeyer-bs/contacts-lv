@@ -4,7 +4,7 @@
     <tr>
         <th scope="col"><input type="checkbox" v-model="selectPage"></th>
         <th scope="col"></th>
-        <th scope="col" v-for="column in columns" @click="updateSortColumn(column)" class="sort">
+        <th scope="col" class="sort" v-for="column in columns" @click="updateSortColumn(column)" >
             {{ column.charAt(0).toUpperCase() + column.slice(1) }}
             <span v-if="column === this.sortFieldUp">
             <i v-if="sortOrderUp === 'asc'" class="fas fa-sort-down act"></i>
@@ -25,18 +25,17 @@
 export default {
     props: {
         users: {},
-        selectAll: {},
-        selectPage: {},
         selected: {},
         columns: {},
         sortField: '',
         sortOrder: '',
-        fetchData: {},
         page: ''
     },
 
     data() {
-        return {}
+        return {
+            selectPage: false,
+        }
     },
     watch: {
         selectPage(value) {
@@ -95,13 +94,12 @@ export default {
                 this.sortOrderUp = 'asc'
             }
             this.pageUp = 1
-            this.fetchData()
         },
     }
 }
 </script>
 
-<style>
+<style scoped>
 .fas {
     font-size: 25px;
     color: #f1f1f1;

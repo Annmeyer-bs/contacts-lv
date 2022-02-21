@@ -1,42 +1,69 @@
 <template>
-
-
     <div class="container">
         <div class="d-flex flex-row justify-content-between ">
             <p class="m-3">Contacts</p>
             <div class="button d-flex">
-                <buttonadd class="m-2 " :modalCreate="modalCreate" :user="user" @userUpdated="userUpdated"></buttonadd>
-                <buttondelete class="m-2 " @click="removeUsers"></buttondelete>
+                <buttonadd class="m-2"
+                           :modalCreate="modalCreate"
+                           @userUpdated="userUpdated">
+                </buttonadd>
+                <buttondelete class="m-2"
+                              @click="removeUsers">
+                </buttondelete>
             </div>
         </div>
-        <div><p v-if="selected.length > 0"> With Checked {{ this.selected.length }}</p></div>
-        <perpage :fetch-data="fetchData" @perPageUpdated="perPageUpdated"
-                 :perPage="perPage" :page="page" @pageUpdated="pageUpdated"></perpage>
-        <div><p class="msg">{{ this.msg }}</p></div>
+        <div>
+            <p v-if="selected.length > 0"> With Checked {{ this.selected.length }}</p>
+        </div>
+        <perpage
+            :page="page"
+            :perPage="perPage"
+            @pageUpdated="pageUpdated"
+            @perPageUpdated="perPageUpdated">
+        </perpage>
+        <div>
+            <p class="msg">{{ this.msg }}</p>
+        </div>
         <table class="table " id="sortable  table-hover">
-            <tableheader :users='users' :selectAll="selectAll" :selectPage="selectPage" :selected="selected"
-                         :columns="columns" :sortOrder="sortOrder"
-                         :sortField="sortField" @sortOrderUpdated="sortOrderUpdated"
-                         :page="page" @pageUpdated="pageUpdated"
-                         @sortFieldUpdated="sortFieldUpdated" :fetch-data="fetchData"
-                         @selectedUpdate="selectedUpdate"></tableheader>
-            <tablelist :users='users' :user="user" :columns="columns" :fetch-data="fetchData" :selected="selected"
-                       @usersUpdated="usersUpdated" @userUpdated="userUpdated"
-                       @selectedUpdate="selectedUpdate"
-                       :modalView="modalView"></tablelist>
+            <tableheader
+                :columns="columns"
+                :page="page"
+                :selected="selected"
+                :sortOrder="sortOrder"
+                :sortField="sortField"
+                :users='users'
+                @pageUpdated="pageUpdated"
+                @sortOrderUpdated="sortOrderUpdated"
+                @sortFieldUpdated="sortFieldUpdated"
+                @selectedUpdate="selectedUpdate">
+            </tableheader>
+            <tablelist
+                :columns="columns"
+                :fetch-data="fetchData"
+                :modalView="modalView"
+                :selected="selected"
+                :user="user"
+                :users='users'
+                @selectedUpdate="selectedUpdate"
+                @userUpdated="userUpdated"
+                @usersUpdated="usersUpdated">
+            </tablelist>
         </table>
-        <pagination v-if="users.length > 0" :pagination="pagination" @pageChanged="pageChanged"
-                    :totalItems="users.length">
+        <pagination v-if="users.length > 0"
+                    :pagination="pagination"
+                    :totalItems="users.length"
+                    @pageChanged="pageChanged">
         </pagination>
-        <modal modalTitle="Create" @userUpdated="userUpdated" v-if="modalCreate.show" @close="modalCreate.show = false"
-               :users="users" :user="user" :fetch-data="fetchData">
-
+        <modal modalTitle="Create" v-if="modalCreate.show"
+               :user="user"
+               @userUpdated="userUpdated"
+               @close="modalCreate.show = false">
         </modal>
-        <modal modalTitle="View" @userUpdated="userUpdated"  v-if="modalView.show" :fetch-data="fetchData"
-               @close="modalView.show = false"
-               :users="users" :user="user"
-               :index="index"
-               :modalView="modalView.show">
+        <modal modalTitle="View" v-if="modalView.show"
+               :user="user"
+               :fetch-data="fetchData"
+               @userUpdated="userUpdated"
+               @close="modalView.show = false">
         </modal>
     </div>
 </template>
@@ -54,7 +81,10 @@ import Pagination from "./Pagination";
 export default {
     components: {Pagination, Perpage, Modal, Buttonadd, Buttondelete, Tableheader, Tablelist},
     props: {
-        url: {type: String, required: true},
+        url: {
+            type: String,
+            required: true
+        },
         columns: {}
     },
     data() {
@@ -68,16 +98,16 @@ export default {
             },
             users: [],
             msg: '',
-            selectAll: false,
-            selectPage: false,
             selected: [],
-            index: '',
             user: {},
             sortField: this.columns[0],
             sortOrder: 'asc',
             perPage: 5,
             page: 1,
-            pagination: { to: 1, from: 1}
+            pagination: {
+                to: 1,
+                from: 1
+            }
         }
     },
 
@@ -88,19 +118,17 @@ export default {
     methods: {
         async fetchData() {
             try {
-                const params = {
+                let params = {
                     sort_field: this.sortField,
                     sort_order: this.sortOrder,
                     per_page: this.perPage,
                     page: this.page
                 }
-                const {data} = await axios.get(this.url, {params})
-                console.log(data)
-                console.log(data.data)
+                let {data} = await axios.get(this.url, {params})
                 this.users = data.data
                 this.pagination = data.meta
-            } catch (e) {
-                console.log(e)
+            } catch (error) {
+                console.error(error)
                 alert('Is error')
             }
 
@@ -108,28 +136,18 @@ export default {
         async removeUsers() {
             if (this.selected.length !== 0) {
                 try {
-                    await axios.delete(`api/users/any/` + this.selected)
+                    await axios.delete(`api/users/batch/` + this.selected)
                     this.selected = []
                     this.fetchData()
                 } catch (error) {
-
+                    console.error(error);
                 }
             } else {
                 this.msg = 'Check User for removing';
             }
         },
-        selectAllUsers() {
-            axios.get(`api/users/all`)
-            .then(response => {
-                this.selected = response.data;
-                this.selectAll = true;
-                this.selectPage = true;
-            })
-
-        },
         usersUpdated(users) {
             this.users = users;
-
         },
         userUpdated(user) {
             this.user = user;
@@ -142,12 +160,11 @@ export default {
         },
         sortOrderUpdated(sortOrder) {
             this.sortOrder = sortOrder;
-        },
-        fetchDataUpdated(fetchData) {
-            this.fetchData = fetchData;
+            this.fetchData()
         },
         perPageUpdated(perPage) {
-          this.perPage = perPage
+            this.perPage = perPage
+            this.fetchData()
         },
         pageChanged(pageNumber) {
             this.page = pageNumber
@@ -156,8 +173,6 @@ export default {
         pageUpdated(page) {
             this.page = page
         },
-
-
     }
 }
 </script>

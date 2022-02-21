@@ -2,6 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CreateUserRequest;
+use App\Http\Requests\DestroyUsersRequest;
+use App\Http\Requests\UpdateUserRequest;
+use App\Http\Requests\UsersRequest;
 use App\Http\Resources\UserResource;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -10,22 +14,14 @@ use App\Models\User;
 class UserController extends Controller
 {
 
-    const PER_PAGE = 5;
-    public const DEFAULT_SORT_FIELD = 'name';
-    public const DEFAULT_SORT_ORDER = 'asc';
-    protected $sortFields = ['id', 'name', 'email', 'adress', 'created_at'];
-    protected $sortOrders = ['asc', 'desc'];
 
-    public function index(Request $request)
+    public function index(UsersRequest $request)
     {
-        $sortFieldInput = $request->input('sort_field', self::DEFAULT_SORT_FIELD);
-        $sortField = in_array($sortFieldInput, $this->sortFields) ? $sortFieldInput : self::DEFAULT_SORT_FIELD;;
-
-        $sortOrder = $request->input('sort_order', self::DEFAULT_SORT_ORDER);
+        $sortField = $request->get('sort_field');
+        $sortOrder = $request->get('sort_order');
+        $perPage = $request->get('per_page');
 
         $query = User::orderBY($sortField, $sortOrder);
-        $perPage = $request->input('per_page') ?? self::PER_PAGE;
-
         $users = $query->paginate((int)$perPage);
 
         return UserResource::collection($users);
@@ -46,19 +42,12 @@ class UserController extends Controller
         }
     }
 
-    public function create(Request $request)
+    public function create(CreateUserRequest $request)
     {
-
-        $request->validate([
-            'name' => 'required|min:3',
-            'email' => 'required|min:3',
-            'adress' => 'required|min:3',
-        ]);
-
         $user = new User();
-        $user->name = $request->name;
-        $user->email = $request->email;
-        $user->adress = $request->adress;
+        $user->name = $request->get('name');
+        $user->email = $request->get('email');
+        $user->adress = $request->get('adress');
 
         if ($user->save()) {
             return response()->json($user, 200);
@@ -70,27 +59,23 @@ class UserController extends Controller
         }
     }
 
-    public function update(Request $request)
+    public function update(UpdateUserRequest $request)
     {
-        $request->validate([
-            'name' => 'required|min:3',
-            'email' => 'required|min:3',
-            'adress' => 'required|min:3',
-        ]);
-
         $user = User::find($request->id);
+
+        $user->name = $request->get('name');
+        $user->email = $request->get('email');
+        $user->adress = $request->get('adress');
 
         $user->update($request->all());
 
         return response()->json('User updated!');
-
     }
 
-    public function destroyAny($users)
+    public function destroyBatch($ids)
     {
-
-       $users = explode(',',$users);
-        if (User::whereKey($users)->delete()) {
+        $ids = explode(',',$ids);
+        if (User::whereIn('id', $ids)->delete()) {
             return response()->json([
                 'message' => 'Users deleted successufully',
                 'status_code' => 200

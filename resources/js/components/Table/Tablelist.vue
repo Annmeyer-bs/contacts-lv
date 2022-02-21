@@ -3,9 +3,9 @@
     <tr v-if="usersUp.length === 0">Users not found</tr>
     <tr v-else class="" v-for="(user, index) in usersUp" :key="index">
         <th scope="row">
-            <input type="checkbox" :value="user.id" v-model="selectedUp" >
+            <input type="checkbox" :value="user.id" v-model="selectedUp">
         </th>
-        <td><p></p></td>
+        <td class="td-img"><img src="storage/img/img-not-found.png"></td>
         <td v-for="column in columns">{{ user[column] }}</td>
         <td>
             <dropdown>
@@ -74,12 +74,11 @@ export default {
                 await axios.delete(`api/users/${user.id}`)
                 this.fetchData()
             } catch (error) {
-
+                console.error(error)
             }
         },
         editUser(user) {
             this.modalView.show = !this.modalView.show
-            console.log(user)
             this.$emit('userUpdated', user)
         },
     },

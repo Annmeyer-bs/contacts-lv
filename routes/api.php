@@ -24,5 +24,5 @@ Route::post('users', [UserController::class, 'create'])->name('api.users.create'
 
 
 Route::delete('users/{user}', [UserController::class, 'destroy'])->name('api.users.destroy');
-Route::delete('users/any/{users}', [UserController::class, 'destroyAny'])->name('api.users.any.destroy');
+Route::delete('users/batch/{ids}', [UserController::class, 'destroyBatch'])->name('api.users.batch.destroy');
 Route::put('users/{user}', [UserController::class, 'update'])->name('api.users.update');

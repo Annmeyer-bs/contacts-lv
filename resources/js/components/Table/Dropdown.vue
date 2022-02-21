@@ -23,14 +23,13 @@ export default {
         }
     },
     created() {
-            document.addEventListener('click', this.toggleDropdown.bind());
+        document.addEventListener('click', this.toggleDropdown.bind());
     },
     methods: {
         toggleDropdown() {
             this.visible = false
         }
     }
-
 }
 </script>
 

@@ -1,8 +1,11 @@
 <template>
     <div class=" d-flex flex-row  justify-content-end align-items-center mr-auto p-2">
         <p class="btn-text">Per&#160page</p>
-        <select class="form-control per-page" v-model="perPageUp" id="pageOption" @change="handlePerPage">
-            <option v-for="page in pageOptions" :key="page" :value="page">{{ page }}</option>
+        <select class="form-control per-page" v-model="perPageUp" id="pageOption"
+                @change="handlePerPage">
+            <option v-for="page in pageOptions"
+                    :key="page"
+                    :value="page">{{ page }}</option>
         </select>
     </div>
 </template>
@@ -11,7 +14,6 @@
 export default {
     name: "Perpage.vue",
     props: {
-        fetchData: {},
         perPage: '',
         page: ''
     },
@@ -42,7 +44,6 @@ export default {
         handlePerPage($event) {
             this.pageUp = 1
             this.perPageUp = $event.target.value
-            this.fetchData()
         }
     }
 }

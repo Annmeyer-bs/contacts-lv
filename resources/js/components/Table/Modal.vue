@@ -12,22 +12,22 @@
                         <div class="modal-body">
                             <slot name="body">
                                 <div class="modal-text">
-                                    <div class="modal-text-name">
+                                    <div class="modal-text-name d-flex align-items-center justify-content-between">
                                         <label>Name</label>
                                         <input type="text" v-model="userInEdit.name"
-                                               placeholder="Please enter your name" maxlength="30">
+                                               placeholder="Please enter name" maxlength="30">
                                         <div class="invalid-feedback" v-if="errors.name">{{ errors.name[0] }}</div>
                                     </div>
-                                    <div class="modal-text-email">
+                                    <div class="modal-text-email d-flex align-items-center justify-content-between">
                                         <label>Email</label>
                                         <input type="text" v-model="userInEdit.email"
-                                               placeholder="Please enter your email" maxlength="30">
+                                               placeholder="Please enter email" maxlength="30">
                                         <div class="invalid-feedback" v-if="errors.email">{{ errors.email[0] }}</div>
                                     </div>
-                                    <div class="modal-text-adress">
+                                    <div class="modal-text-adress d-flex align-items-center justify-content-between">
                                         <label>Adress</label>
                                         <input type="text" v-model="userInEdit.adress"
-                                               placeholder="Please enter your adress" maxlength="30">
+                                               placeholder="Please enter adress" maxlength="30">
                                         <div class="invalid-feedback" v-if="errors.adress">{{ errors.adress[0] }}</div>
                                     </div>
                                 </div>
@@ -56,18 +56,11 @@
 
 <script>
 
-import localeDateMixin from "../localeDateMixin";
-
 export default {
-    mixins: [localeDateMixin],
 
     props: {
-        fetchData: {},
-        modalView: {},
-        modalCreate: {},
-        index: {},
         user: {},
-        users: {},
+        fetchData: {},
         modalTitle: {
             type: String,
             required: true,
@@ -106,7 +99,6 @@ export default {
                     email: this.userInEdit.email,
                     adress: this.userInEdit.adress
                 })
-                this.fetchData()
                 this.$emit('close')
             } catch (error) {
                 switch (error.response.status) {
@@ -129,7 +121,7 @@ export default {
                     adress: this.userInEdit.adress
                 })
                 this.fetchData()
-                this.$emit('close')
+                this.$emit('close');
             } catch (error) {
                 switch (error.response.status) {
                     case 422:
@@ -151,7 +143,6 @@ export default {
 p {
     margin: 0 10px;
 }
-
 .modal-content {
     margin: 10% 30%;
     position: relative;
@@ -165,7 +156,6 @@ p {
     border-radius: 0.3rem;
     outline: 0;
 }
-
 .modal-mask {
     transition: opacity .3s ease;
     background-color: rgba(00, 00, 00, .43);
@@ -176,7 +166,6 @@ p {
     width: 100vw;
     height: 100vh;
 }
-
 .modal-dialog {
     max-width: 1400px;
     position: fixed;
@@ -187,40 +176,32 @@ p {
     height: 100%;
     outline: 0;
 }
-
 .modal-header, .modal-footer {
     border: none;
 }
-
 .modal-body {
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
-
 .modal-text {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
 }
-
 .modal-img {
     width: 140px;
     height: 140px;
 }
-
 img {
     max-width: 100%;
 }
-
 td img {
     max-width: 80%;
 }
-
 input {
     margin: 20px;
 }
-
 .invalid-feedback {
     display: inline-block;
 }
